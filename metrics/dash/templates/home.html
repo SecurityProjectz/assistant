@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Assistant</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="home.css">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h3>Personal Assistant</h3>
+          <strong>PA</strong>
+        </div>
+        <ul class="list-unstyled components">
+          <li class="active">
+            <a href="#homeSubmenu">
+              <i class="fas fa-home"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#dashboardSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+              <i class="fas fa-copy"></i>
+              Dashboards
+            </a>
+            <ul class="collapse list-unstyled" id="dashboardSubmenu">
+              <li><a href="#dash1">ApiData</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Page Content  -->
+      <div id="content">
+        <nav class="navbar navbar-light bg-light">
+          <div class="contain-fluid">
+              <button id="sidebarCollapse" type="button" name="toggle" class="btn btn-info">
+                <i class="fas fa-align-left"></i>
+              </button>
+              <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-align-justify"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Page</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Page</a>
+                            </li>
+                        </ul>
+          </div>
+
+        </nav>
+        <div class="chartjs-wrapper">
+        <div class='col-sm-4'>
+          <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+      </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <!-- Popper.JS -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+   <!-- Bootstrap JS -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+   <script type="text/javascript">
+       $(document).ready(function () {
+           $('#sidebarCollapse').on('click', function () {
+               $('#sidebar').toggleClass('active');
+           });
+       });
+   </script>
+
+   <!-- chart scripts-->
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels'></script>
+<script>
+    // Create chart
+var ctx = document.getElementById("myChart");
+var chart = new Chart(ctx, {
+    type:"doughnut",
+    data: {
+        labels : ["Red","Blue"],
+        datasets: [{
+            label: "Gauge",
+            data : [10, 190],
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+            ]
+        }]
+    },
+    options: {
+        circumference: Math.PI,
+        rotation : Math.PI,
+        cutoutPercentage : 80, // precent
+        plugins: {
+					  datalabels: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+						  borderColor: '#ffffff',
+              color: function(context) {
+							  return context.dataset.backgroundColor;
+						  },
+						  font: function(context) {
+                var w = context.chart.width;
+                return {
+                  size: w < 512 ? 18 : 20
+                }
+              },
+              align: 'start',
+              anchor: 'start',
+              offset: 10,
+						  borderRadius: 4,
+						  borderWidth: 1,
+              formatter: function(value, context) {
+							  var i = context.dataIndex;
+                var len = context.dataset.data.length - 1;
+                if(i == len){
+                  return null;
+                }
+							  return value+' mph';
+						  }
+            }
+        },
+        legend: {
+            display: false
+        },
+        tooltips: {
+            enabled: false
+        }
+    }
+});
+
+
+// DEMO Code: not relevant to example
+function change_gauge(chart, label, data){
+  chart.data.datasets.forEach((dataset) => {
+    if(dataset.label == label){
+      dataset.data = data;
+    }
+  });
+  chart.update();
+}
+
+var accelerating = false;
+function accelerate(){
+  accelerating = false;
+  window.setTimeout(function(){
+      change_gauge(chart,"Gauge",[20,140])
+  }, 1000);
+
+  window.setTimeout(function(){
+      change_gauge(chart,"Gauge",[60,140])
+  }, 2000);
+
+  window.setTimeout(function(){
+      change_gauge(chart,"Gauge",[100,100])
+  }, 3000);
+
+  window.setTimeout(function(){
+      change_gauge(chart,"Gauge",[180,20])
+  }, 4000);
+
+  window.setTimeout(function(){
+      change_gauge(chart,"Gauge",[200,0])
+  }, 5000);
+}
+
+// Start sequence
+accelerate();
+window.setInterval(function(){
+  if(!accelerating){
+    acelerating = true;
+    accelerate();
+  }
+}, 6000);
+</script>
+  </body>
+</html>
