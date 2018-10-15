@@ -5,3 +5,5 @@ logs/
 *.logs
 *.log 
 *.log*
+djangodash/
+djangodash/*
