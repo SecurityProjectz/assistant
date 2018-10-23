@@ -1,0 +1,133 @@
+<style>
+#gauge-demo {
+    height: 440px;
+    width: 100%;
+    background: black;
+}
+
+#gauge {
+    width: 80%;
+    height: 100%;
+    float: left;
+}
+
+#seasons {
+    width: 20%;
+    float: left;
+    text-align: left;
+    margin-top: 20px;
+}
+</style>
+<link rel='stylesheet' href='https://cdn3.devexpress.com/jslib/18.1.6/css/dx.common.css'>
+<link rel='stylesheet' href='https://cdn3.devexpress.com/jslib/18.1.6/css/dx.light.css'>
+
+<div class="dx-viewport demo-container">
+    <div id="gauge-demo">
+        <div id="gauge"></div>
+    </div>
+</div>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+<script src='https://cdn3.devexpress.com/jslib/18.1.6/js/dx.all.js'></script>
+<script>
+$(function(){
+    var gauge = $("#gauge").dxCircularGauge({
+        scale: {
+            startValue: 10,
+            endValue: 40,
+            tickInterval: 5,
+            label: {
+                customizeText: function (arg) {
+                    return arg.valueText + " °C";
+                }
+            }
+        },
+        rangeContainer: {
+            ranges: [
+                { startValue: 10, endValue: 20, color: "#0077BE" },
+                { startValue: 20, endValue: 30, color: "#E6E200" },
+                { startValue: 30, endValue: 40, color: "#77DD77" }
+            ]
+        },
+        tooltip: { enabled: true },
+        title: {
+            text: "Temperature in the Greenhouse",
+            font: { size: 28 }
+        },
+        value : dataSource[0].mean,
+        subvalues : [dataSource[0].min, dataSource[0].max]
+    }).dxCircularGauge("instance");
+    
+  /*  $("#seasons").dxSelectBox({
+        width: 150,
+        dataSource: dataSource,
+        displayExpr: "name",
+        value: dataSource[0],
+        onSelectionChanged: function(e) {
+            gauge.option("value", e.selectedItem.mean);
+            gauge.option("subvalues", [e.selectedItem.min, e.selectedItem.max]);
+        }
+    }); */
+});
+
+
+var dataSource = [{
+    name: 'Summer',
+    mean: 35,
+    min: 28,
+    max: 38
+}, {
+    name: 'Autumn',
+    mean: 24,
+    min: 20,
+    max: 32
+}, {
+    name: 'Winter',
+    mean: 18,
+    min: 16,
+    max: 23
+}, {
+    name: 'Spring',
+    mean: 27,
+    min: 18,
+    max: 31
+}]; 
+
+function change_gauge(min, max, count){
+        gauge.option("value", count);
+        gauge.option("subvalues", [min, max]);
+    }
+
+var accelerating = false;
+function accelerate(){
+  accelerating = false;
+  window.setTimeout(function(){
+      change_gauge(10,20,40)
+  }, 1000);
+
+  window.setTimeout(function(){
+      change_gauge(12,20,40)
+  }, 2000);
+
+  window.setTimeout(function(){
+      change_gauge(20,10,40)
+  }, 3000);
+
+  window.setTimeout(function(){
+      change_gauge(10,20,40)
+  }, 4000);
+
+  window.setTimeout(function(){
+      change_gauge(15,20,40)
+  }, 5000);
+}
+
+// Start sequence
+accelerate();
+window.setInterval(function(){
+  if(!accelerating){
+    acelerating = true;
+    accelerate();
+  }
+}, 6000);
+</script>
