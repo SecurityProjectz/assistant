@@ -6,7 +6,7 @@ Click==7.0
 configparser==3.5.0
 Django==1.11.16
 django-filter==2.0.0
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 enum34==1.1.6
 Flask==1.0.2
 futures==3.2.0
